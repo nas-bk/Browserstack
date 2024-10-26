@@ -1,24 +1,25 @@
 package tests.android;
 
 import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
 import tests.TestBase;
 
-import static data.TestData.*;
 import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.Assertions.assertThat;
-import static pages.Wikipedia.*;
+import static screens.Wikipedia.*;
 
 
 public class AndroidTest extends TestBase {
     String result;
 
     @Tag("android")
-    @Test
-    void unsuccessfulOpenPageTest() {
+    @CsvFileSource(resources = "/data.csv", numLinesToSkip = 1)
+    @ParameterizedTest
+    void unsuccessfulOpenArticleTest(String searchQuery) {
 
         step("Type search", () ->
-                searchQuery(QUERY));
+                searchQuery(searchQuery));
 
         step("Verify content found", () ->
                 assertThat(TEXT_VIEW)

@@ -1,25 +1,26 @@
 package tests.ios;
 
 import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
 import tests.TestBase;
 
-import static data.TestData.QUERY;
 import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.Assertions.assertThat;
-import static pages.SampleApp.querySearch;
+import static screens.SampleApp.querySearch;
 
 public class IosTest extends TestBase {
     String result;
 
     @Tag("ios")
-    @Test
-    void searchTest() {
+    @CsvFileSource(resources = "/data.csv", numLinesToSkip = 1)
+    @ParameterizedTest
+    void searchTest(String searchQuery) {
 
         step("Type search", () ->
-                result = querySearch(QUERY));
+                result = querySearch(searchQuery));
 
         step("Verify result", () ->
-                assertThat(result).isEqualTo(QUERY));
+                assertThat(result).isEqualTo(searchQuery));
     }
 }
